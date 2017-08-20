@@ -1,0 +1,89 @@
+group 'com.wb'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'com.google.protobuf'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            exclude 'ch9_grpc_exam**'
+        }
+    }
+}
+
+compileJava {
+    excludes = ['**/ch9_grpc_exam**']
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    //netty
+    compile 'io.netty:netty-all:4.1.11.Final'
+
+    // protobuf
+    compile 'com.google.protobuf:protobuf-java:3.3.1'
+    compile 'com.google.protobuf:protobuf-java-util:3.3.1'
+
+    // thrift
+    compile 'org.apache.thrift:libthrift:0.10.0'
+
+    //grpc
+    compile 'io.grpc:grpc-netty:1.4.0'
+    compile 'io.grpc:grpc-protobuf:1.4.0'
+    compile 'io.grpc:grpc-stub:1.4.0'
+}
+
+// 编码统一设置为UTF-8
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+[compileJava, javadoc, compileTestJava]*.options*.encoding = "UTF-8"
+
+
+// grpc..............................................
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        // ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier
+        // gradle versions
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.0'
+    }
+}
+
+protobuf {
+
+    // 指定grpc生成的代码路径(message部分)
+    generatedFilesBaseDir = "src/"
+
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.2.0"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.4.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {
+                // service部分代码的生成路径
+                outputSubDir = 'java/'
+            }
+        }
+    }
+}
+
+
+
+

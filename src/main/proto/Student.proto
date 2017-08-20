@@ -1,0 +1,61 @@
+// use "gradle generateProto" cmd to generate stub code and service code....
+
+syntax = "proto3";
+
+package ch10;
+
+option java_package = "ch10";
+option java_outer_classname = "StudentProto";
+option java_multiple_files = true;
+
+message MyRequest {
+    string username = 1;
+}
+
+message MyResponse {
+    string realname = 1;
+}
+
+message StudentResp {
+    string name = 1;
+    int32 age = 2;
+    string city = 3;
+}
+
+message StudentRespList {
+    repeated StudentResp studentRespList = 1;
+}
+message StudentReq {
+    int32 age = 1;
+}
+
+message StreamReq {
+    string req_info = 1;
+}
+
+message StreamResp {
+    string resp_info = 1;
+}
+
+service StudentService {
+    // 双向都是普通请求/响应
+    rpc GetRealNameByUserName (MyRequest) returns (MyResponse) {
+    }
+
+    // 服务器端返回一个stream
+    rpc GetStudentsByAge (StudentReq) returns (stream StudentResp) {
+    }
+
+    // 客户端发出一个stream的请求
+    rpc GetStudentsWrapperByAges (stream StudentReq) returns (StudentRespList) {
+    }
+
+    // 双向stream
+    rpc BiTalk (stream StreamReq) returns (stream StreamResp) {
+    }
+}
+
+// just for test build.gradle config
+message NOTUSE {
+    int32 a = 1;
+}

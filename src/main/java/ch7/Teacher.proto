@@ -1,0 +1,60 @@
+syntax = "proto2";
+
+package ch7;
+option optimize_for = SPEED;
+option java_package = "ch7";
+option java_outer_classname = "DataInfo";
+
+message Teacher {
+    optional string name = 1;
+    optional int32 age = 2;
+    optional string address = 3;
+    optional string classes = 4;
+    repeated Student students = 5;
+}
+
+message Student {
+    optional string name = 1;
+    optional int32 age = 2;
+    optional string address = 3;
+}
+
+/****************************************************************************************************/
+// 多协议消息解决办法：1:自定义编解码器 2:使用oneof（如下）
+// 外层消息包含了所有的消息类型,通过Union Type来传递某一个消息
+/*
+message MyMsg {
+    enum MsgType {
+        PersonType = 1;
+        DogType = 2;
+        CatType = 3;
+    }
+
+    required MsgType msg_type = 1;
+    // oneof里面的成员只会由一个存在
+    oneof data_body {
+        Msg1 person = 2;
+        Msg2 dog = 3;
+        Msg3 cat = 4;
+    }
+}
+
+message Msg1 {
+    optional string name = 1;
+    optional int32 age = 2;
+    optional string tele = 3;
+}
+
+message Msg2 {
+    optional string name = 1;
+    optional int32 age = 2;
+}
+
+message Msg3 {
+    optional string name = 1;
+}
+*/
+
+
+
+
