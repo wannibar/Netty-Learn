@@ -30,7 +30,7 @@ public class SelectorTest1 {
         // 绑定端口
         for (int port : ports) {
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.configureBlocking(false);
+            serverSocketChannel.configureBlocking(false);   //设置成非阻塞
             ServerSocket serverSocket = serverSocketChannel.socket();
             serverSocket.bind(new InetSocketAddress(port));
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
