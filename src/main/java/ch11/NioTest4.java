@@ -22,7 +22,7 @@ public class NioTest4 {
         ByteBuffer buffer = ByteBuffer.allocate(4);
         while (true) {
 
-            buffer.clear(); // this line  is very important
+            buffer.clear(); // this line  is very important // not flip
 
             int readCnt = inChannel.read(buffer);
             System.out.println("Real readCnt: " + readCnt);

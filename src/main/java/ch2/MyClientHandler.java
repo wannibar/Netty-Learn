@@ -18,7 +18,6 @@ public class MyClientHandler extends SimpleChannelInboundHandler<String> {
 
         // 发回给服务器端的内容
         ctx.channel().writeAndFlush("from client:" + LocalDateTime.now());
-
     }
 
     @Override

@@ -1,5 +1,5 @@
 group 'com.wb'
-version '1.0-SNAPSHOT'
+version 'V1'
 
 apply plugin: 'java'
 apply plugin: 'com.google.protobuf'
@@ -24,10 +24,8 @@ compileJava {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-
     //netty
-    compile 'io.netty:netty-all:4.1.11.Final'
+    compile 'io.netty:netty-all:4.1.15.Final'
 
     // protobuf
     compile 'com.google.protobuf:protobuf-java:3.3.1'
@@ -40,6 +38,12 @@ dependencies {
     compile 'io.grpc:grpc-netty:1.4.0'
     compile 'io.grpc:grpc-protobuf:1.4.0'
     compile 'io.grpc:grpc-stub:1.4.0'
+
+    compile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+
+
 }
 
 // 编码统一设置为UTF-8

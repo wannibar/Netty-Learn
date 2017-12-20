@@ -1,5 +1,6 @@
 package ch2;
 
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -17,7 +18,15 @@ public class MyServerHandler extends SimpleChannelInboundHandler<String> {
         System.out.println(ctx.channel().remoteAddress() + ":" + msg);
 
         // 返回给客户端的消息
-        ctx.channel().writeAndFlush("from server:" + UUID.randomUUID());
+        ChannelFuture cf = ctx.channel().writeAndFlush("from server:" + UUID.randomUUID());
+        // ctx.writeAndFlush("another write and flush way..."); // 事件处理流更短
+
+        /*
+        cf.addListener((f) -> {
+            System.out.println("write end....");
+        });
+        */
+
     }
 
     @Override

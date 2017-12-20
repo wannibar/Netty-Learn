@@ -27,7 +27,9 @@ public class NewServer {
             int readCnt = 0;
             while (readCnt != -1) {
                 try {
+                    // 最大接收4K字节
                     readCnt = socketChannel.read(byteBuffer);
+                    System.out.println(readCnt);
                 } catch (Exception e) {
                     //e.printStackTrace();
                     socketChannel.close();

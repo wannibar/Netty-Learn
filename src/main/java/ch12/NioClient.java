@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,7 +37,7 @@ public class NioClient {
                         try {
                             sc.finishConnect();
                             ByteBuffer buffer = ByteBuffer.allocate(1024);
-                            buffer.put((LocalDateTime.now().toString() + ":连接建立:").getBytes());
+                            buffer.put((LocalTime.now().toString() + ": 连接建立").getBytes());
                             buffer.flip();
                             sc.write(buffer);
 
@@ -55,18 +55,20 @@ public class NioClient {
                                         sc.write(buffer);
                                     } catch (Exception e) {
                                         e.printStackTrace();
+                                        System.out.println("in thread caught exception, so Close Client:" + sc);
+                                        try {
+                                            sc.close();
+                                        } catch (IOException e2) {
+                                            System.out.println("close exception...");
+                                            e2.printStackTrace();
+                                        }
+                                    } finally {
                                     }
                                 }
                             });
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-//                        try {
-//                            sc.register(selector, SelectionKey.OP_READ);
-//                        } catch (ClosedChannelException e) {
-//                            e.printStackTrace();
-//                        }
-
                     }
                 } else if (selectionKey.isReadable()) {
                     SocketChannel rsc = (SocketChannel) selectionKey.channel();
@@ -80,6 +82,13 @@ public class NioClient {
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
+                        System.out.println("exception caught, so Close Client:" + rsc);
+                        try {
+                            rsc.close();
+                        } catch (IOException e2) {
+                            System.out.println("close exception...");
+                            e2.printStackTrace();
+                        }
                     }
                 }
             });

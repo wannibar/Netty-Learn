@@ -14,10 +14,13 @@ public class Server {
     public static void main(String[] args) {
 
         EventLoopGroup bossGroup = new NioEventLoopGroup();     //完成连接的接收,负责把连接分发给workerGroup
-        EventLoopGroup workerGroup = new NioEventLoopGroup();   //完成连接的处理
+        EventLoopGroup workerGroup = new NioEventLoopGroup();   //完成连接的后续处理
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup)
+                // handler是针对boss组
+                // childHandler是针对worker组
+                //.handler(null)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ServerInitializer());
 

@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 
 // 完成客户端和服务器端互相发送字符串
-public class MySever {
+public class MyServer {
     public static void main(String[] args) {
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup worker = new NioEventLoopGroup();

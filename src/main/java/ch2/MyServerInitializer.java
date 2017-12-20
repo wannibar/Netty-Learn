@@ -1,6 +1,7 @@
 package ch2;
 
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -19,7 +20,10 @@ public class MyServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("LengthFieldPrepender", new LengthFieldPrepender(4));
         pipeline.addLast("StringDecoder", new StringDecoder(CharsetUtil.UTF_8));
         pipeline.addLast("StringEncoder", new StringEncoder(CharsetUtil.UTF_8));
-        pipeline.addLast("MyHandler", new MyServerHandler());
+        pipeline.addLast("ServerHandler", new MyServerHandler());
+        pipeline.addLast("OUT1", new ChannelOutboundHandlerAdapter(){});
+        pipeline.addLast("OUT2", new ChannelOutboundHandlerAdapter(){});
+        pipeline.addLast("OUT3", new ChannelOutboundHandlerAdapter(){});
     }
 }
 

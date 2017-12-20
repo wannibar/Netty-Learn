@@ -18,6 +18,6 @@ public class MyClientInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new ProtobufDecoder(DataInfo.Student.getDefaultInstance()));
         pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
         pipeline.addLast(new ProtobufEncoder());
-        pipeline.addLast("MyHandler", new MyClientHandler());
+        pipeline.addLast("ServerHandler", new MyClientHandler());
     }
 }

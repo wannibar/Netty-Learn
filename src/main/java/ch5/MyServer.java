@@ -9,7 +9,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 // WebSocket
-// 如果建立连接后,服务器端或者客户端开启飞行模式或者直接恰掉网络等,则都不能互相感应到对方掉线.
+// 如果建立连接后,服务器端或者客户端开启飞行模式或者直接掐掉网络等,则都不能互相感应到对方掉线.
 // 都会认为连接仍然建立着,这种情况需要加入心跳包来解决
 
 // 注意观察HTTP请求,先建立HTTP请求,然后升级,状态码101(转换协议),以及Frames

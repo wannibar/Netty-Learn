@@ -20,6 +20,8 @@ public class MyClient {
     private final ManagedChannel channel;
     // 使用阻塞方式
     private final StudentServiceGrpc.StudentServiceBlockingStub blockingStub;
+
+
     private final StudentServiceGrpc.StudentServiceStub asyncStub;
 
     public MyClient(String host, int port) {

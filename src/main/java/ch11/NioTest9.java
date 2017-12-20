@@ -16,7 +16,7 @@ public class NioTest9 {
 
         FileLock fl = fc.lock(3, 2, true);
 
-        System.out.println("Valid" + fl.isValid());
+        System.out.println("Valid: " + fl.isValid());
         System.out.println("Lock Type:" + fl.isShared());
 
         fl.release();

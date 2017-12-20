@@ -1,5 +1,6 @@
 package ch12;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -7,7 +8,10 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by WQS on 2017/8/18.
@@ -15,10 +19,9 @@ import java.util.*;
  * Github: https://github.com/wannibar
  */
 
-//TODO 处理客户端关闭.
 public class NioServer {
 
-    private static Map<String, SocketChannel> clientMap = new HashMap<>();
+    private static Map<SocketChannel, String> clientMap = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
 
@@ -44,9 +47,8 @@ public class NioServer {
                             client.configureBlocking(false);
                             client.register(selector, SelectionKey.OP_READ);
                             String clientID = "[" + UUID.randomUUID().toString() + "]";
-                            clientMap.put(clientID, client);
+                            clientMap.put(client, clientID);
                         }
-                        //it.remove();
                     } else if (key.isReadable()) {
                         SocketChannel sc = null;
                         try {
@@ -57,38 +59,46 @@ public class NioServer {
                             if (count > 0) {
                                 buffer.flip();
                                 String recvMsg = String.valueOf(Charset.forName("UTF-8").decode(buffer).array());
-                                System.out.println(sc + recvMsg);
+                                System.out.println("client count: " + clientMap.size());
+                                System.out.println(clientMap.get(sc) + " recv " + recvMsg);
 
-                                String senderKey = "";
-                                for (Map.Entry<String, SocketChannel> entry : clientMap.entrySet()) {
-                                    if (entry.getValue() == sc) {
-                                        senderKey = entry.getKey();
+                                String senderID = "";
+                                for (Map.Entry<SocketChannel, String> entry : clientMap.entrySet()) {
+                                    if (entry.getKey() == sc) {
+                                        senderID = entry.getValue();
                                         break;
                                     }
                                 }
 
-                                for (Map.Entry<String, SocketChannel> entry : clientMap.entrySet()) {
-                                    SocketChannel v = entry.getValue();
+                                // 向每个在线的客户端发送数据
+                                for (Map.Entry<SocketChannel, String> entry : clientMap.entrySet()) {
+                                    SocketChannel v = entry.getKey();
                                     ByteBuffer buf = ByteBuffer.allocate(1024);
-                                    buf.put((senderKey + ":" + recvMsg).getBytes());
+                                    buf.put((senderID + ":" + recvMsg).getBytes());
                                     buf.flip();
                                     v.write(buf);
                                 }
                             }
 
                         } catch (Exception e) {
+                            e.printStackTrace();
                             System.out.println("Close Client:" + sc);
                             clientMap.remove(sc);
-                            sc.close();
+                            try {
+                                sc.close();
+                            } catch (IOException e2) {
+                                System.out.println("close exception...");
+                                e2.printStackTrace();
+                            }
+                        } finally {
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
-            selectionKeys.clear();
 
-            System.out.println(selectionKeys.size());
+            selectionKeys.clear();
         }
     }
 }

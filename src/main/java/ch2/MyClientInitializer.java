@@ -19,6 +19,6 @@ public class MyClientInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("LengthFieldPrepender", new LengthFieldPrepender(4));
         pipeline.addLast("StringDecoder", new StringDecoder(CharsetUtil.UTF_8));
         pipeline.addLast("StringEncoder", new StringEncoder(CharsetUtil.UTF_8));
-        pipeline.addLast("MyHandler", new MyClientHandler());
+        pipeline.addLast("ServerHandler", new MyClientHandler());
     }
 }

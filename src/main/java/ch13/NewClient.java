@@ -12,12 +12,14 @@ import java.nio.channels.SocketChannel;
  */
 public class NewClient {
     public static void main(String[] args) throws Exception {
+
         SocketChannel socketChannel = SocketChannel.open();
         socketChannel.configureBlocking(true);
         socketChannel.connect(new InetSocketAddress("localhost", 8888));
 
         // the file should be a very large file .. >= 100Mb
         String fileName = "src/main/java/ch13/bigData.zip";
+        //fileName = "G:\\study\\Java\\Framework\\Netty\\video\\1_学习的要义.mp4";
 
         FileChannel fileChannel = new FileInputStream(fileName).getChannel();
 
@@ -27,7 +29,7 @@ public class NewClient {
         long reqCnt = fileChannel.size();
         long curCnt = 0;
         while (true) {
-            // windows平台最多只能传送4k字节
+            // windows平台最多只能传送8M字节
             long transCnt = fileChannel.transferTo(curCnt, 4096 * 4096, socketChannel);
             System.out.println(transCnt);
             if (transCnt == 0)
