@@ -30,6 +30,4 @@ public class MyClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
             ctx.channel().writeAndFlush(buf);
         }
     }
-
-
 }

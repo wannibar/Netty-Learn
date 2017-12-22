@@ -1,4 +1,4 @@
-package ch17;
+package ch18;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -7,7 +7,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 
-// 展示TCP粘包拆包问题
+// 解决ch17中的TCP粘包拆包问题
 public class MyServer {
     public static void main(String[] args) {
         EventLoopGroup boss = new NioEventLoopGroup();
